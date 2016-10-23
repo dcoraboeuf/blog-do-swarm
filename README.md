@@ -60,3 +60,24 @@ ID                           HOSTNAME        STATUS  AVAILABILITY  MANAGER STATU
 20iw98tuhpg1fsmbvd38kymmj *  swarm           Ready   Active        Leader
 cdemrd1r5mmguf57p7og4bxpb    swarm-agent-00  Ready   Active    
 ```
+
+## Monitoring
+
+### Visualizer
+
+Basic and visual monitoring of the swarm can be done using the [`visualizer`](https://github.com/ManoMarks/docker-swarm-visualizer) container. You can run:
+
+```bash
+docker run --name visualizer -d \
+    -p 8083:8083 \
+    -e HOST=$(docker-machine ip swarm) \
+    -e PORT=8083 \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    manomarks/visualizer
+```
+
+The visualizer is now available on port 8083 of the master node:
+
+```bash
+open http://$(docker-machine ip swarm):8083
+```

@@ -7,6 +7,11 @@ variable "docker_swarm_domain" {
    default = "nemerosa.net"
 }
 
+variable "docker_swarm_domain_name" {
+   description = "Name of the swarm in the DNS domain"
+   default = "swarm"
+}
+
 variable "do_region" {
   description = "DigitalOcean Region"
   default = "fra1"

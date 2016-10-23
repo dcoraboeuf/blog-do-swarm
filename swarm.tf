@@ -48,7 +48,7 @@ resource "digitalocean_floating_ip" "docker_swarm_floating_ip" {
 resource "digitalocean_record" "docker_swarm_dns_record" {
     domain = "${var.docker_swarm_domain}"
     type = "A"
-    name = "swarm"
+    name = "${var.docker_swarm_domain_name}"
     value = "${digitalocean_floating_ip.docker_swarm_floating_ip.ip_address}"
 }
 

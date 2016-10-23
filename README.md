@@ -1,2 +1,5 @@
 # do-swarm
-Creation of a Digital Ocean Docker Swarm
+
+> Work in progress - still experimental.
+
+The goal is to create a Digital Ocean Docker Swarm.

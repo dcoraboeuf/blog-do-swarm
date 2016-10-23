@@ -4,7 +4,7 @@ variable "do_token" {
 
 variable "do_region" {
   description = "DigitalOcean Region"
-  default = "FRA1"
+  default = "fra1"
 }
 
 variable "do_agent_size" {
@@ -15,6 +15,11 @@ variable "do_agent_size" {
 variable "do_ssh_key_public" {
    description = "Path to the SSH public key"
    default = "./do-key.pub"
+}
+
+variable "do_ssh_key_private" {
+   description = "Path to the SSH private key"
+   default = "./do-key"
 }
 
 variable "do_swarm_name" {

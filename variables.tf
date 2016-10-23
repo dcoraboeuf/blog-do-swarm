@@ -12,6 +12,11 @@ variable "do_agent_size" {
   default = "2GB"
 }
 
+variable "do_ssh_key_public" {
+   description = "Path to the SSH public key"
+   default = "./do-key.pub"
+}
+
 variable "do_swarm_name" {
   description = "Name of the cluster, used also for networking"
   default = "swarm"

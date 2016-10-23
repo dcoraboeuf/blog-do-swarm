@@ -1,3 +1,8 @@
+resource "digitalocean_ssh_key" "default" {
+    name = "${var.do_swarm_name}-ssh-key"
+    public_key = "${file(var.do_ssh_key_public)}"
+}
+
 resource "digitalocean_droplet" "docker_swarm_master" {
    count = "${var.do_swarm_master_count}"
    image = "docker"

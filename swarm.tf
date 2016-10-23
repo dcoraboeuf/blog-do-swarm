@@ -40,6 +40,11 @@ resource "digitalocean_droplet" "docker_swarm_master_initial" {
 
 }
 
+resource "digitalocean_floating_ip" "docker_swarm_floating_ip" {
+    droplet_id = "${digitalocean_droplet.docker_swarm_master_initial.id}"
+    region = "${digitalocean_droplet.docker_swarm_master_initial.region}"
+}
+
 # TODO Other masters
 
 resource "digitalocean_droplet" "docker_swarm_agent" {

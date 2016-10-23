@@ -2,6 +2,11 @@ variable "do_token" {
   description = "Your DigitalOcean API key"
 }
 
+variable "docker_swarm_domain" {
+   description = "Name of the DNS domain for the swarm"
+   default = "nemerosa.net"
+}
+
 variable "do_region" {
   description = "DigitalOcean Region"
   default = "fra1"

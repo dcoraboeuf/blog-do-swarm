@@ -41,7 +41,7 @@ To connect to the swarm defined at `swarm.nemerosa.net` (or whatever has been co
 ```bash
 docker-machine create --driver generic \
    --generic-ip-address=swarm.nemerosa.net \
-   --generic-ssh-key ./do-key swarm
+   --generic-ssh-key ./do-key swarm-master-00
 ```
 
 where `do-key` is the private key which has been generated as a prerequisite.
@@ -49,7 +49,7 @@ where `do-key` is the private key which has been generated as a prerequisite.
 To use this swarm machine as your docker environment, you can then run:
 
 ```bash
-eval $(docker-machine env swarm)
+eval $(docker-machine env swarm-master-00)
 ```
 
 You should now see the list of nodes created by the Terraform setup:
@@ -70,7 +70,7 @@ Basic and visual monitoring of the swarm can be done using the [`visualizer`](ht
 ```bash
 docker run --name visualizer -d \
     -p 8083:8083 \
-    -e HOST=$(docker-machine ip swarm) \
+    -e HOST=$(docker-machine ip swarm-master-00) \
     -e PORT=8083 \
     -v /var/run/docker.sock:/var/run/docker.sock \
     manomarks/visualizer
@@ -79,5 +79,5 @@ docker run --name visualizer -d \
 The visualizer is now available on port 8083 of the master node:
 
 ```bash
-open http://$(docker-machine ip swarm):8083
+open http://$(docker-machine ip swarm-master-00):8083
 ```

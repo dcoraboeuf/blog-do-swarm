@@ -17,7 +17,8 @@ resource "digitalocean_droplet" "docker_swarm_master_initial" {
 
    connection {
       user = "root"
-      key_file = "${file(var.do_ssh_key_private)}"
+      private_key = "${file(var.do_ssh_key_private)}"
+      agent = false
    }
 
    provisioner "remote-exec" {
@@ -68,7 +69,8 @@ resource "digitalocean_droplet" "docker_swarm_agent" {
 
    connection {
       user = "root"
-      key_file = "${file(var.do_ssh_key_private)}"
+      private_key = "${file(var.do_ssh_key_private)}"
+      agent = false
    }
 
    provisioner "file" {

@@ -1,0 +1,13 @@
+/**
+ * Plugins
+ */
+
+apply plugin: 'base'
+
+/**
+ * Wrapper definition
+ */
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+}

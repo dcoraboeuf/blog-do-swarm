@@ -2,3 +2,5 @@
 *.backup
 do-key*
 *.token
+/.gradle
+

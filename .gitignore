@@ -3,4 +3,6 @@
 do-key*
 *.token
 /.gradle
+/.idea
+*.iml
 

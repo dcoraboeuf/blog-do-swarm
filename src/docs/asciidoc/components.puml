@@ -1,0 +1,27 @@
+@startuml
+cloud "DigitalOcean" {
+
+    node "master-initial" <<droplet,docker>> {
+        component "ip" <<network>> as MasterIP
+        component "docker" as MasterDocker
+    }
+
+    node "master" <<droplet,docker>> {
+        component "docker" as MasterSecondaryDocker
+    }
+
+    node "agent" <<droplet,docker>> {
+        component "docker" as AgentDocker
+    }
+
+    component "MasterIP" <<floating-ip>> as MasterFloatingIP
+
+    node "nemerosa.net" <<domain>> {
+        component "swarm" <<a-record>> as SwarmDNS
+    }
+
+}
+
+MasterFloatingIP ..> MasterIP
+SwarmDNS ..> MasterFloatingIP
+@enduml

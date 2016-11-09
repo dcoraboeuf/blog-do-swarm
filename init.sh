@@ -1,3 +1,4 @@
 #!/bin/bash
 
-ssh-keygen -t rsa -f ./do-key
+rm -f do-key*
+ssh-keygen -t rsa -f ./do-key -N ""

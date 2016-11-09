@@ -3,7 +3,7 @@
 ##################################################################################################################
 
 resource "digitalocean_ssh_key" "docker_swarm_ssh_key" {
-  name = "${var.do_swarm_name}-ssh-key"
+  name = "${var.swarm_name}-ssh-key"
   public_key = "${file(var.do_ssh_key_public)}"
 }
 
@@ -13,7 +13,7 @@ resource "digitalocean_ssh_key" "docker_swarm_ssh_key" {
 
 resource "digitalocean_droplet" "docker_swarm_master_initial" {
   count = 1
-  name = "${format("${var.do_swarm_name}-master-%02d", count.index)}"
+  name = "${format("${var.swarm_name}-master-%02d", count.index)}"
 
   image = "docker"
   size = "${var.do_agent_size}"
@@ -58,9 +58,9 @@ resource "digitalocean_floating_ip" "docker_swarm_floating_ip" {
 }
 
 resource "digitalocean_record" "docker_swarm_dns_record" {
-  domain = "${var.docker_swarm_domain}"
+  domain = "${var.dns_domain}"
   type = "A"
-  name = "${var.docker_swarm_domain_name}"
+  name = "${var.dns_domain_name}"
   value = "${digitalocean_floating_ip.docker_swarm_floating_ip.ip_address}"
 }
 
@@ -73,8 +73,8 @@ resource "digitalocean_record" "docker_swarm_dns_record" {
 ##################################################################################################################
 
 resource "digitalocean_droplet" "docker_swarm_agent" {
-  count = "${var.do_swarm_agent_count}"
-  name = "${format("${var.do_swarm_name}-agent-%02d", count.index)}"
+  count = "${var.swarm_agent_count}"
+  name = "${format("${var.swarm_name}-agent-%02d", count.index)}"
 
   image = "docker"
   size = "${var.do_agent_size}"

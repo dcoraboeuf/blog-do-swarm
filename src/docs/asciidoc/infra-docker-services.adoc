@@ -1,0 +1,10 @@
+
+.Docker services
+|===
+| Service | Port | URL
+
+| `visualizer`
+| 8081
+| http://swarm.nemerosa.net:8081
+
+|===

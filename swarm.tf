@@ -15,17 +15,18 @@ resource "digitalocean_droplet" "docker_swarm_master_initial" {
   count = 1
   name = "${format("${var.swarm_name}-master-%02d", count.index)}"
 
-  image = "docker"
+  image = "${var.do_image}"
   size = "${var.do_agent_size}"
   region = "${var.do_region}"
   private_networking = true
 
   user_data = "#cloud-config\n\nssh_authorized_keys:\n  - \"${file("${var.do_ssh_key_public}")}\"\n"
   ssh_keys = [
-    "${digitalocean_ssh_key.docker_swarm_ssh_key.id}"]
+    "${digitalocean_ssh_key.docker_swarm_ssh_key.id}"
+  ]
 
   connection {
-    user = "root"
+    user = "${var.do_user}"
     private_key = "${file(var.do_ssh_key_private)}"
     agent = false
   }
@@ -33,17 +34,17 @@ resource "digitalocean_droplet" "docker_swarm_master_initial" {
   provisioner "remote-exec" {
     inline = [
       "docker swarm init --advertise-addr ${self.ipv4_address}",
-      "docker swarm join-token --quiet worker > /var/lib/docker/worker.token",
-      "docker swarm join-token --quiet manager > /var/lib/docker/manager.token"
+      "docker swarm join-token --quiet worker > ${var.swarm_token_dir}/worker.token",
+      "docker swarm join-token --quiet manager > ${var.swarm_token_dir}/manager.token"
     ]
   }
 
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i ${var.do_ssh_key_private} root@${self.ipv4_address}:/var/lib/docker/worker.token ."
+    command = "scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i ${var.do_ssh_key_private} ${var.do_user}@${self.ipv4_address}:${var.swarm_token_dir}/worker.token ."
   }
 
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i ${var.do_ssh_key_private} root@${self.ipv4_address}:/var/lib/docker/manager.token ."
+    command = "scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i ${var.do_ssh_key_private} ${var.do_user}@${self.ipv4_address}:${var.swarm_token_dir}/manager.token ."
   }
 
 }
@@ -76,7 +77,7 @@ resource "digitalocean_droplet" "docker_swarm_agent" {
   count = "${var.swarm_agent_count}"
   name = "${format("${var.swarm_name}-agent-%02d", count.index)}"
 
-  image = "docker"
+  image = "${var.do_image}"
   size = "${var.do_agent_size}"
   region = "${var.do_region}"
   private_networking = true
@@ -86,19 +87,19 @@ resource "digitalocean_droplet" "docker_swarm_agent" {
     "${digitalocean_ssh_key.docker_swarm_ssh_key.id}"]
 
   connection {
-    user = "root"
+    user = "${var.do_user}"
     private_key = "${file(var.do_ssh_key_private)}"
     agent = false
   }
 
   provisioner "file" {
     source = "worker.token"
-    destination = "/var/lib/docker/worker.token"
+    destination = "${var.swarm_token_dir}/worker.token"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "docker swarm join --token $(cat /var/lib/docker/worker.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address}:2377"
+      "docker swarm join --token $(cat ${var.swarm_token_dir}/worker.token) ${digitalocean_droplet.docker_swarm_master_initial.ipv4_address}:2377"
     ]
   }
 }

@@ -11,6 +11,16 @@ variable "do_region" {
   default = "fra1"
 }
 
+variable "do_image" {
+  description = "Slug for the image to install"
+  // TODO Use coreos-stable when Docker 1.12.3 is available on it
+  // At this moment:
+  // stable -> 1.11
+  // beta -> 1.12.1
+  // alpha -> 1.12.3
+  default = "coreos-alpha"
+}
+
 variable "do_agent_size" {
   description = "Agent Droplet Size"
   default = "2GB"
@@ -26,6 +36,11 @@ variable "do_ssh_key_private" {
   default = "./do-key"
 }
 
+variable "do_user" {
+  description = "User to use to connect the machine using SSH. Depends on the image being installed."
+  default = "core"
+}
+
 ## Domain
 
 variable "dns_domain" {
@@ -39,6 +54,11 @@ variable "dns_domain_name" {
 }
 
 ## Swarm setup
+
+variable "swarm_token_dir" {
+  description = "Path (on the remote machine) which contains the generated swarm tokens"
+  default = "/home/core"
+}
 
 variable "swarm_name" {
   description = "Name of the cluster, used also for networking"

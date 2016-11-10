@@ -36,48 +36,30 @@ The resources created by the Terraform setup are:
 
 ## Connection
 
-To connect to the swarm defined at `swarm.nemerosa.net` (or whatever has been configured as variables), the easiest is to create a machine:
+### SSH
+
+Run the `./connect.sh` script to open a SSH session on the Docker Swarm master.
+
+You can also append some commands to run them directy. For example:
 
 ```bash
-docker-machine create --driver generic \
-   --generic-ip-address=swarm.nemerosa.net \
-   --generic-ssh-key ./do-key swarm-master-00
+./connect.sh docker service ls
 ```
 
-where `do-key` is the private key which has been generated as a prerequisite.
+### Docker
 
-To use this swarm machine as your docker environment, you can then run:
+Once the Terraform state has been created (after the `apply` command has run), the IP of the swarm is available
+using:
 
 ```bash
-eval $(docker-machine env swarm-master-00)
+terraform output -no-color swarm_ip
 ```
 
-You should now see the list of nodes created by the Terraform setup:
+In order to connect to the swarm, you can run:
 
 ```bash
-$ docker node ls
-ID                           HOSTNAME        STATUS  AVAILABILITY  MANAGER STATUS
-20iw98tuhpg1fsmbvd38kymmj *  swarm           Ready   Active        Leader
-cdemrd1r5mmguf57p7og4bxpb    swarm-agent-00  Ready   Active    
+export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=`terraform output -no-color swarm_ip`
 ```
 
-## Monitoring
-
-### Visualizer
-
-Basic and visual monitoring of the swarm can be done using the [`visualizer`](https://github.com/ManoMarks/docker-swarm-visualizer) container. You can run:
-
-```bash
-docker run --name visualizer -d \
-    -p 8083:8083 \
-    -e HOST=$(docker-machine ip swarm-master-00) \
-    -e PORT=8083 \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    manomarks/visualizer
-```
-
-The visualizer is now available on port 8083 of the master node:
-
-```bash
-open http://$(docker-machine ip swarm-master-00):8083
-```
+You can then run the Docker commands directly against the swarm.

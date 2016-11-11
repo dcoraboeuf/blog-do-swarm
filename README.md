@@ -6,7 +6,12 @@ The goal is to create a Digital Ocean Docker Swarm.
 
 ## Prerequisites
 
-Generate a Digital Ocean API key and expose it as a `TF_VAR_do_token` environment variable.
+Generate a Digital Ocean [API token](https://cloud.digitalocean.com/settings/api/tokens) and expose it as 
+a `TF_VAR_do_token` environment variable:
+
+```bash
+export TF_VAR_do_token="yourtoken"
+```
 
 Generate a SSH key pair:
 

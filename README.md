@@ -8,7 +8,13 @@ The goal is to create a Digital Ocean Docker Swarm.
 
 Generate a Digital Ocean API key and expose it as a `TF_VAR_do_token` environment variable.
 
-Generate a SSH key pair - your can use the `init.sh` script. The key pair will be generated with `do-key` and 
+Generate a SSH key pair:
+
+```bash
+ssh-keygen -t rsa -f ./do-key -N ""
+```
+
+The key pair will be generated with `do-key` and 
 `do-key.pub` names in the current directory.
 
 ## Configuration

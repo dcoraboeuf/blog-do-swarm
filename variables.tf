@@ -41,18 +41,6 @@ variable "do_user" {
   default = "core"
 }
 
-## Domain
-
-variable "dns_domain" {
-  description = "Name of the DNS domain for the swarm"
-  default = "nemerosa.net"
-}
-
-variable "dns_domain_name" {
-  description = "Name of the swarm in the DNS domain"
-  default = "swarm"
-}
-
 ## Swarm setup
 
 variable "swarm_token_dir" {

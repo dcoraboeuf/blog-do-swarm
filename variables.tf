@@ -72,5 +72,5 @@ variable "swarm_master_count" {
 
 variable "swarm_agent_count" {
   description = "Number of agents to deploy"
-  default = "1"
+  default = "2"
 }

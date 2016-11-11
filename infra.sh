@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-DIR=$(dirname $0)
-
-${DIR}/connect.sh docker service create \
+docker service create \
   --name=visualizer \
   --publish=8081:8080/tcp \
   --constraint=node.role==manager \
